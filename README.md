@@ -1,0 +1,2 @@
+# Tourism-Management-System
+The project is on tourism management system. It is a website where users visit to access information about different places along with the facilities available and package cost. There is a need to keep a record of people who are interested to visit a particular location and also make sure that their trip is planned in a better way.  It is very important to maintain an efficient software to handle information of different bookings done by the users. This application provides a way to record these information and to access this in a simple way.
