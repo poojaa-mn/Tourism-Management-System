@@ -1,82 +1,81 @@
 <?php
 session_start();
-error_reporting(0);
 include('includes/config.php');
+if(isset($_POST['login']))
+{
+$uname=$_POST['username'];
+$password=md5($_POST['password']);
+$sql ="SELECT UserName,Password FROM admin WHERE UserName=:uname and Password=:password";
+$query= $dbh -> prepare($sql);
+$query-> bindParam(':uname', $uname, PDO::PARAM_STR);
+$query-> bindParam(':password', $password, PDO::PARAM_STR);
+$query-> execute();
+$results=$query->fetchAll(PDO::FETCH_OBJ);
+if($query->rowCount() > 0)
+{
+$_SESSION['alogin']=$_POST['username'];
+echo "<script type='text/javascript'> document.location = 'dashboard.php'; </script>";
+} else{
+	
+	echo "<script>alert('Invalid Details');</script>";
+
+}
+
+}
+
 ?>
+
 <!DOCTYPE HTML>
 <html>
 <head>
-<title>TMS | Tourism Management System</title>
+<title>TMS | Admin Sign in</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-
-<script type="applijewelleryion/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
-<link href="css/bootstrap.css" rel='stylesheet' type='text/css' />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!-- Bootstrap Core CSS -->
+<link href="css/bootstrap.min.css" rel='stylesheet' type='text/css' />
+<!-- Custom CSS -->
 <link href="css/style.css" rel='stylesheet' type='text/css' />
+<link rel="stylesheet" href="css/morris.css" type="text/css"/>
+<!-- Graph CSS -->
+<link href="css/font-awesome.css" rel="stylesheet">
+<link rel="stylesheet" href="css/jquery-ui.css"> 
+<!-- jQuery -->
+<script src="js/jquery-2.1.4.min.js"></script>
+<!-- //jQuery -->
 
-<!-- Custom Theme files -->
-<script src="js/jquery-1.12.0.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
-
-</head>
+<!-- lined-icons -->
+<link rel="stylesheet" href="css/icon-font.min.css" type='text/css' />
+<!-- //lined-icons -->
+</head> 
 <body>
-<?php include('includes/header.php');?>
-<div class="banner">
+	<div class="main-wthree">
 	<div class="container">
-		<h1 > TMS - Tourism Management System</h1>
-	</div>
-</div>
-
-<!---holiday---->
-<div class="container">
-	<div class="holiday">
-	
-	<h3>Package List</h3>
-					
-<?php $sql = "SELECT * from tbltourpackages order by rand() limit 4";
-$query = $dbh->prepare($sql);
-$query->execute();
-$results=$query->fetchAll(PDO::FETCH_OBJ);
-$cnt=1;
-if($query->rowCount() > 0)
-{
-foreach($results as $result)
-{	?>
-			<div class="rom-btm">
-				
-				<div class="col-md-3 room-left ">
-					<img src="admin/pacakgeimages/<?php echo htmlentities($result->PackageImage);?>" class="img-responsive" alt="">
-				</div>
-				<div class="col-md-6 room-midle ">
-					<h4>Package Name: <?php echo htmlentities($result->PackageName);?></h4>
-					<h6>Package Type : <?php echo htmlentities($result->PackageType);?></h6>
-					<p><b>Package Location :</b> <?php echo htmlentities($result->PackageLocation);?></p>
-					<p><b>Features</b> <?php echo htmlentities($result->PackageFetures);?></p>
-				</div>
-				<div class="col-md-3 room-right ">
-					<h5>Rs <?php echo htmlentities($result->PackagePrice);?></h5>
-					<a href="package-details.php?pkgid=<?php echo htmlentities($result->PackageId);?>" class="view">Details</a>
-				</div>
+	<div class="sin-w3-agile">
+		<h2>Sign In</h2>
+		<form  method="post">
+			<div class="username">
+				<span class="username">Username:</span>
+				<input type="text" name="username" class="name" placeholder="" required="">
 				<div class="clearfix"></div>
 			</div>
-
-<?php }} ?>
+			<div class="password-agileits">
+				<span class="username">Password:</span>
+				<input type="password" name="password" class="password" placeholder="" required="">
+				<div class="clearfix"></div>
+			</div>
 			
-		
-
-</div>
+			<div class="login-w3">
+					<input type="submit" class="login" name="login" value="Sign In">
+			</div>
 			<div class="clearfix"></div>
+		</form>
+				<div class="back">
+					<a href="../index.php">Back to home</a>
+				</div>
+				
 	</div>
-
-
-
-<!-- signup -->
-<?php include('includes/signup.php');?>			
-<!-- //signu -->
-<!-- signin -->
-<?php include('includes/signin.php');?>			
-<!-- //signin -->
-			
-
+	</div>
+	</div>
 </body>
 </html>
